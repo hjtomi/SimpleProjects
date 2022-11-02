@@ -1,6 +1,8 @@
 import random
 
-words = ['cat', 'bat', 'via', 'new', 'app', 'mow']
+words = [
+    'cat', 'bat', 'via', 'new', 'app', 'mow', 'map', 'cap', 'bra', 'ass', 'sex'
+    ]
 query = random.choice(words)
 print('___')
 
@@ -11,7 +13,7 @@ while word != "exit":
         print("You correctly guesses the word\n", word.upper())
         break
     num = 0
-    for i in range(3):
+    for i in range(len(query)):
         if word[i] in query:
             num += 1
 
