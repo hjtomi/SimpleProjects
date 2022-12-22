@@ -94,7 +94,7 @@ def crt_new_acc_scrn():
 
             # Saving the file
             try:
-                f = open(usertxt_path+account_data["Username"]+".txt", "x")
+                f = open(USERTXT_PATH + account_data["Username"] + ".txt", "x")
                 for values in account_data.values():
                     f.write(values+"\n")
                 f.close()
@@ -123,7 +123,7 @@ def log_in_scrn():
     wgts_on_scrn = []
 
     # No account
-    if len(os.listdir(accounts_path)) == 0:
+    if len(os.listdir(ACCOUNTS_PATH)) == 0:
         info_label = tk.Label(window, text="No accounts yet...", background=theme_color, foreground=font_color, font=theme_font)
         info_label.grid(column=0, row=0)
         back_button = tk.Button(text=" << back ", font=theme_font+" 12")
@@ -137,14 +137,14 @@ def log_in_scrn():
 
         row_to_put_btn = 0
         acc_btns = {}
-        for file in os.listdir(accounts_path):
+        for file in os.listdir(ACCOUNTS_PATH):
             acc_button = tk.Button(window, text=file.partition(".")[0], font=theme_font+" 12")
             acc_button.grid(column=0, row=row_to_put_btn, sticky="w")
             row_to_put_btn += 1
             wgts_on_scrn.append(acc_button)
             acc_btns[file] = acc_button
 
-        back_button.grid(column=0, row=len(os.listdir(accounts_path))+1, sticky="w")
+        back_button.grid(column=0, row=len(os.listdir(ACCOUNTS_PATH)) + 1, sticky="w")
 
         wgts_on_scrn.append(back_button)
         wgts_on_scrn.extend(acc_btns.values())
@@ -162,7 +162,7 @@ def log_in_scrn():
 # example: hjtomi.txt
 def specific_log_in_scrn(acc):
     def check_password(password):
-        f = open(usertxt_path+acc, "r")
+        f = open(USERTXT_PATH + acc, "r")
         for i, line in enumerate(f):
             if i == 6:
                 acc_pw = line.partition("\n")[0]
@@ -191,7 +191,7 @@ def specific_log_in_scrn(acc):
 
 def account_screen(acc):
     wgts_on_scrn = []
-    f = open(usertxt_path+acc, "r")
+    f = open(USERTXT_PATH + acc, "r")
     for i, line in enumerate(f):
         if i < 6:
             data_name_label = tk.Label(window, text=data_to_show[i], background=theme_color, foreground=font_color,
@@ -240,7 +240,7 @@ def edit_account_scrn(acc):
             error = True
 
         if not error:
-            f = open(usertxt_path+acc, "w")
+            f = open(USERTXT_PATH + acc, "w")
             new_data = ""
             for i in range(len(entries)):
                 new_data = new_data+entries[i].get()+"\n"
@@ -256,14 +256,14 @@ def edit_account_scrn(acc):
     def delete_account():
         answer = messagebox.askyesno(title="Warning!", message="Are you sure you want to permanently delete '{}' account?".format(acc.partition(".")[0]))
         if answer == True:
-            os.remove(usertxt_path+acc)
+            os.remove(USERTXT_PATH + acc)
             dest_wgts(wgts_on_scrn)
             enter_screen()
 
     wgts_on_scrn = []
 
     data = []
-    f = open(usertxt_path + acc, "r")
+    f = open(USERTXT_PATH + acc, "r")
     for line in f:
         data.append(line.partition("\n")[0])
     f.close()
@@ -298,8 +298,8 @@ def edit_account_scrn(acc):
 data_to_show = ["Username:", "Full name:", "Gender:", "Birthday:", "email:", "job:"]
 account_attributes = ["Username", "Full name", "Gender", "Birth date", "Email", "Job", "Password", "Confirm password"]
 
-accounts_path = "D:\Scripts\Python\SimpleProjects\Scripts\Profiles\Accounts"
-usertxt_path = "D:\Scripts\Python\SimpleProjects\Scripts\Profiles\Accounts\\"
+ACCOUNTS_PATH = "Accounts"
+USERTXT_PATH = "Accounts\\"
 
 theme_color = "black"
 theme_font = "Helvetica"
