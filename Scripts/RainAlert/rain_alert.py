@@ -12,7 +12,7 @@ PARAMETERS = {
 }
 
 TWILIO_ACC_SID = "ACacfd54ccaa982ab8251548c8f40650a0"
-TWILIO_AUTH_TOKEN = "0975f63c35575996deab22ab5b88ac37"
+TWILIO_AUTH_TOKEN = "9e54f12520da6bd812967d5e572220cc"
 TWILIO_PHONE_NUMBER = "+13856006090"
 
 DATE_FORMAT = "20%y-%m-%d"
@@ -56,5 +56,5 @@ else:
     message = client.messages.create(
         body="Ma 7 oratol 16 oraig NEM fog esni az eso.",
         from_=TWILIO_PHONE_NUMBER,
-        to="+365134561"
+        to="+36302804337"
     )
