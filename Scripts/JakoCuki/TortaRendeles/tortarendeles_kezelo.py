@@ -35,6 +35,7 @@ else:
         json.dump(data, file, indent=4)
 # ?
 
+
 def uj_rendeles():
     rendelo_neve = input("Megrendelo neve: ")
     datum = input("Datum: ")
