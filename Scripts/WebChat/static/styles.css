@@ -1,0 +1,11 @@
+.chat-section {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 50vh;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+}
+
+.username {
+    color: blue;
+}
