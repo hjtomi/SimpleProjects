@@ -6,6 +6,8 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import datetime
 
+# TODO: Telefonos osszetomorites a konnyebb hasznalhatosag erdekeben
+
 db = SQLAlchemy()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///messages.db"
@@ -19,6 +21,11 @@ class FormMessage(FlaskForm):
     send = SubmitField("Send message")
 
 
+class FormUsername(FlaskForm):
+    username = StringField("", validators=[DataRequired()], render_kw={'autofocus': True})
+    submit = SubmitField("Done")
+
+
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String, nullable=False)
@@ -30,11 +37,18 @@ with app.app_context():
     db.create_all()
 
 
-@app.route("/")
-def home():
+@app.route("/", methods=["GET", "POST"])
+def nickname():
+    if request.method == "POST":
+        return redirect(url_for('home', username=request.form["username"]))
+
+    return render_template('name.html', form=FormUsername())
+
+
+@app.route("/<username>")
+def home(username):
     messages = db.session.query(Message).all()
-    form = FormMessage()
-    return render_template('index.html', messages=reversed(messages), form=form)
+    return render_template('index.html', messages=reversed(messages), form=FormMessage(), username=username)
 
 
 @app.route("/name")
@@ -42,18 +56,25 @@ def name():
     return render_template('name.html')
 
 
-@app.route("/send_message", methods=["GET", "POST"])
-def send_message():
-    new_message = request.form["message"]
+@app.route("/send_message/<username>", methods=["GET", "POST"])
+def send_message(username):
     new_record = Message(
-        message=new_message,
+        message=request.form["message"],
         time=datetime.datetime.now().replace(microsecond=0),
-        sender="TestUser"
+        sender=username
     )
     db.session.add(new_record)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('home', username=username))
 
+
+@app.template_filter('format_date')
+def format_date_filter(str_date):
+    datetime_object = datetime.datetime.strptime(str_date, "%Y-%m-%d %H:%M:%S")
+    return datetime_object.strftime("%B-%d %H:%M")
+
+
+app.jinja_env.filters['format_date'] = format_date_filter
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

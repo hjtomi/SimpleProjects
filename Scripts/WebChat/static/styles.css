@@ -1,11 +1,15 @@
 .chat-section {
     display: flex;
     flex-direction: column-reverse;
-    height: 50vh;
+    height: 70vh;
     overflow-y: auto;
     overflow-wrap: break-word;
 }
 
 .username {
-    color: blue;
+    color: dodgerblue;
+}
+
+.time {
+    color: dodgerblue;
 }

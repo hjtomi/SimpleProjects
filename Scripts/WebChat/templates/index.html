@@ -7,30 +7,27 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mx-5">
-  <div class="text-center">
-    <h1>Welcome to my website!</h1>
-    <a href="{{ url_for('name') }}">Set Nickname!</a>
+<div class="container-fluid">
+  <div class="text-center my-3">
+    <h1>Welcome to the <span style="text-decoration: underline;">Web Chat</span>!</h1>
   </div>
-  <div>
-    <div class="row">
-      <div class="col-2 p-3 text-end">
-        <p>nothing here</p>
+  <div class="row">
+    <div class="col-sm-0 col-lg-2">
+
+    </div>
+    <div class="col-sm-11 col-lg-8 pb-2 border border-dark">
+      <div class="chat-section">
+        {% for message in messages %}
+          <p><span class="username">{{message.sender}}</span> - {{message.message}} - <span class="time">{{ message.time | format_date }}</span></p>
+        {% endfor %}
       </div>
-      <div class="col-8 p-3 border-start border-end border-dark">
-        <div class="chat-section">
-          {% for message in messages %}
-            <p><span class="username">{{message.sender}}</span> - {{message.message}}</p>
-          {% endfor %}
-        </div>
-        <form action="{{ url_for('send_message') }}" method="POST">
-          {{ form.csrf_token() }}
-          {{ render_form(form) }}
-        </form>
-      </div>
-      <div class="col-2 p-3">
-        <p>nothing here either</p>
-      </div>
+      <form action="{{ url_for('send_message', username=username) }}" method="POST">
+        {{ form.csrf_token() }}
+        {{ render_form(form) }}
+      </form>
+    </div>
+    <div class="col-sm-1 col-lg-2">
+
     </div>
   </div>
 </div>
