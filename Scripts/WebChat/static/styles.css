@@ -13,3 +13,9 @@
 .time {
     color: dodgerblue;
 }
+
+@media (max-width: 992px) and (orientation: portrait) {
+    h1 {
+        font-size: 5rem;
+    }
+}
