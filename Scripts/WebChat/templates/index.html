@@ -3,7 +3,7 @@
 
 {% block title %}Web Chat{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="static/styles.css">
+<link rel="stylesheet" href="static/index_styles.css">
 {% endblock %}
 
 {% block content %}
@@ -15,10 +15,10 @@
     <div class="col-sm-0 col-lg-2">
 
     </div>
-    <div class="col-sm-11 col-lg-8 pb-2 border border-dark">
+    <div class="col-sm-12 col-lg-8 pb-2 border border-dark">
       <div class="chat-section">
         {% for message in messages %}
-          <p><span class="username">{{message.sender}}</span> - {{message.message}} - <span class="time">{{ message.time | format_date }}</span></p>
+          <p class="entire-message"><span class="username">{{message.sender}}</span> - <span class="message">{{message.message}}</span> - <span class="time">{{ message.time | format_date }}</span></p>
         {% endfor %}
       </div>
       <form action="{{ url_for('send_message', username=username) }}" method="POST">
@@ -26,7 +26,7 @@
         {{ render_form(form) }}
       </form>
     </div>
-    <div class="col-sm-1 col-lg-2">
+    <div class="col-sm-0 col-lg-2">
 
     </div>
   </div>

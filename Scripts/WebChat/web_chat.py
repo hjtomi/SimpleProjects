@@ -4,26 +4,26 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from flask_socketio import SocketIO, send
 import datetime
-
-# TODO: Telefonos osszetomorites a konnyebb hasznalhatosag erdekeben
 
 db = SQLAlchemy()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///messages.db"
 app.config["SECRET_KEY"] = "h7f5t8ekh7gw5e3vin985rg723h3oi89ped"
 bootstrap = Bootstrap5(app)
+socketio = SocketIO(app)
 db.init_app(app)
 
 
 class FormMessage(FlaskForm):
     message = StringField("", validators=[DataRequired()], render_kw={'autofocus': True})
-    send = SubmitField("Send message")
+    send = SubmitField("Küldés")
 
 
 class FormUsername(FlaskForm):
     username = StringField("", validators=[DataRequired()], render_kw={'autofocus': True})
-    submit = SubmitField("Done")
+    submit = SubmitField("Tovább")
 
 
 class Message(db.Model):
@@ -38,7 +38,7 @@ with app.app_context():
 
 
 @app.route("/", methods=["GET", "POST"])
-def nickname():
+def set_username():
     if request.method == "POST":
         return redirect(url_for('home', username=request.form["username"]))
 
@@ -49,11 +49,6 @@ def nickname():
 def home(username):
     messages = db.session.query(Message).all()
     return render_template('index.html', messages=reversed(messages), form=FormMessage(), username=username)
-
-
-@app.route("/name")
-def name():
-    return render_template('name.html')
 
 
 @app.route("/send_message/<username>", methods=["GET", "POST"])
@@ -71,10 +66,17 @@ def send_message(username):
 @app.template_filter('format_date')
 def format_date_filter(str_date):
     datetime_object = datetime.datetime.strptime(str_date, "%Y-%m-%d %H:%M:%S")
-    return datetime_object.strftime("%B-%d %H:%M")
+    return datetime_object.strftime("%m-%d %H:%M")
+
+
+@socketio.on('message')
+def handlemsg(msg):
+    print('Message: ' + msg)
+    send(msg, broadcast=True)
 
 
 app.jinja_env.filters['format_date'] = format_date_filter
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    socketio.run(app, debug=True)
+    # app.run(debug=True, host="0.0.0.0")
