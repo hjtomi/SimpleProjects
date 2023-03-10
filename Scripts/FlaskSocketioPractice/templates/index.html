@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practice webpage</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+</head>
+<body>
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li class="message-item">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <button onclick="buttonClickNew()">Click this button to see magic!</button>
+
+  <script type="text/javascript" charset="UTF-8">
+    let socket = io();
+
+    socket.on('message', (data) => {
+      console.log('message recieved');
+      let elements = Object.values(document.getElementsByClassName('message-item'));
+      elements[elements.length - 1].innerHTML = data['data'];
+    });
+
+    function buttonClickNew() {
+      socket.send({data: 'last item changed to this, what a shame'});
+      console.log('message sent');
+    }
+  </script>
+</body>
+</html>

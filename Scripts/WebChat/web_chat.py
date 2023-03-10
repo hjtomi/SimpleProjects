@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-from flask_socketio import SocketIO, send
+# from flask_socketio import SocketIO, send
 import datetime
 
 db = SQLAlchemy()
@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///messages.db"
 app.config["SECRET_KEY"] = "h7f5t8ekh7gw5e3vin985rg723h3oi89ped"
 bootstrap = Bootstrap5(app)
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
 db.init_app(app)
 
 
@@ -69,14 +69,14 @@ def format_date_filter(str_date):
     return datetime_object.strftime("%m-%d %H:%M")
 
 
-@socketio.on('message')
-def handlemsg(msg):
-    print('Message: ' + msg)
-    send(msg, broadcast=True)
+# @socketio.on('message')
+# def handlemsg(msg):
+#     print('Message: ' + msg)
+#     send(msg, broadcast=True)
 
 
 app.jinja_env.filters['format_date'] = format_date_filter
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
-    # app.run(debug=True, host="0.0.0.0")
+    # socketio.run(app, debug=True)
+    app.run(debug=True, host="0.0.0.0")
