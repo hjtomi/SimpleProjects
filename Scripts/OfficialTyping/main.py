@@ -5,5 +5,34 @@
 
 from tkinter import *
 from string import ascii_lowercase
-from random import choice
-print(ascii_lowercase)
+import random
+
+
+def random_letter():
+    return random.choice(ascii_lowercase)
+
+
+def letter_color():
+    letter.config(fg='black')
+
+
+def key_press(event):
+    global current_letter
+    global letter
+    if event.char == current_letter:
+        letter.config(fg='black')
+        current_letter = random_letter()
+        letter.config(text=current_letter)
+    else:
+        letter.config(fg='red')
+
+
+window = Tk()
+window.title('Official Typing')
+window.resizable(width=False, height=False)
+window.bind('<KeyPress>', key_press)
+current_letter = random_letter()
+letter = Label(text=current_letter, font=('bold', 500))
+letter.pack()
+
+window.mainloop()
