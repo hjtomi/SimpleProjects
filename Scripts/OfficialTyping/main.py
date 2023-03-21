@@ -32,7 +32,7 @@ window.title('Official Typing')
 window.resizable(width=False, height=False)
 window.bind('<KeyPress>', key_press)
 current_letter = random_letter()
-letter = Label(text=current_letter, font=('bold', 500))
+letter = Label(text=current_letter, font=('courier', 500, 'bold'))
 letter.pack()
 
 window.mainloop()
