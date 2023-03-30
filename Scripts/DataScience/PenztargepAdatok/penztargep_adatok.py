@@ -26,16 +26,22 @@ def rename_files() -> None:
             os.rename(f'Excelek/{file_name}', f'{file_name.partition(".")[0]}.{szam}.xlsx')
 
 
-file_names = natsorted(os.listdir('Excelek'))
-dfs = []
+def create_grand_excel():
+    file_names = natsorted(os.listdir('Excelek'))
+    dfs = []
 
-for file_name in os.listdir('Excelek'):
-    df = pd.read_excel(f'Excelek/{file_name}', header=4, skipfooter=6)
-    df.rename(columns={'Unnamed: 0': 'nap', 'Kártyás fizetés': 'kartyas_fizetes'}, inplace=True)
-    dfs.append(df)
+    for file_name in os.listdir('Excelek'):
+        df = pd.read_excel(f'Excelek/{file_name}', header=4, skipfooter=6)
+        df.rename(columns={'Unnamed: 0': 'nap', 'Kártyás fizetés': 'kartyas_fizetes'}, inplace=True)
+        dfs.append(df)
 
-for df in dfs[1:]:
-    dfs[0] = dfs[0].merge(df, how='outer')
+    for df in dfs[1:]:
+        dfs[0] = dfs[0].merge(df, how='outer')
 
-grand_df = dfs[0]
-grand_df.to_excel('grand-penztargep.xlsx', sheet_name='Munka1')
+    grand_df = dfs[0]
+    grand_df.to_excel('grand-penztargep.xlsx', sheet_name='Munka1')
+
+
+df = pd.read_excel('grand-penztargep.xlsx')
+plt.plot(df.index, df['kartyas_fizetes'])
+plt.show()

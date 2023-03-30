@@ -23,9 +23,9 @@ def suti_osszehasonlitas():
         plt.bar(nev[:i], osszesen, color=random_color(), width=0.8)
         nevek.append(nev[:i])
 
-    plt.ylim([0, 500])
+    plt.ylim([0, 600])
     plt.ylabel("Osszesen")
-    plt.xticks(rotation=45, fontsize=7)
+    plt.xticks(rotation=45, fontsize=5)
 
     plt.grid()
     plt.tight_layout()
@@ -83,4 +83,4 @@ def osszesen_vs_ertek():
     plt.show()
 
 
-osszesen_vs_ertek()
+suti_osszehasonlitas()
