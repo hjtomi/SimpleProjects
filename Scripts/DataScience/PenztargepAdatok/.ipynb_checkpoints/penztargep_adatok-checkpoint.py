@@ -69,15 +69,15 @@ def dates_to_grand():
 df = pd.read_excel('grand-penztargep-datummal.xlsx')
 
 # Plotting
+plt.style.use('bmh')
 
 # plt.plot(df['datum'], df[0.05])
 # plt.plot(df['datum'], df[0.18])
 # plt.plot(df['datum'], df[0.27])
 
-plt.title('Centrum Cuki Heti Átlag Bevétele')
-plt.xticks(rotation=45)
-plt.ylim(bottom=130000, top=750000)
-plt.plot(df['datum'], df['osszesen'].rolling(7).mean())
-plt.grid()
-plt.tight_layout()
+plt.xticks(rotation=45, fontsize=7)
+
+plt.plot(df['datum'], df['osszesen'].rolling(window=7).sum())
+
+plt.title('Osszes bevetel az evek alatt.')
 plt.show()
