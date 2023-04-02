@@ -7,6 +7,8 @@ import datetime
 
 FIRST_DATE = datetime.date(2021, 1, 1)
 NUMBER_OF_DAYS = 815
+EUR_TO_HUF = 380
+DATE_FORMAT = '%Y-%m-%d'
 
 
 def rename_files():
@@ -65,19 +67,23 @@ def dates_to_grand():
     df.to_excel('grand-penztargep-datummal.xlsx', index=False)
 
 
-# DataFrame
-df = pd.read_excel('grand-penztargep-datummal.xlsx')
+df_huf = pd.read_excel('EUR_HUF Historical Data.xlsx')
 
-# Plotting
 
-# plt.plot(df['datum'], df[0.05])
-# plt.plot(df['datum'], df[0.18])
-# plt.plot(df['datum'], df[0.27])
+print(df_huf)
 
-plt.title('Centrum Cuki Heti Átlag Bevétele')
-plt.xticks(rotation=45)
-plt.ylim(bottom=130000, top=750000)
-plt.plot(df['datum'], df['osszesen'].rolling(7).mean())
-plt.grid()
-plt.tight_layout()
-plt.show()
+# for i, row in enumerate(df_huf[:-1].iterrows()):
+#     current_row_contents = row[1]
+#     dt_date = row[1][0]
+#     dt_next_date = df_huf.loc[i+1][0]
+#     day_diff = (dt_next_date - dt_date).days
+#
+#     print(current_row_contents)
+#     print(dt_date)
+#     print(dt_next_date)
+#     print(day_diff)
+#     print("\n")
+#     if day_diff > 1:
+#         for j in range(day_diff):
+#             df_huf = df_huf.append(current_row_contents)
+#             df_huf.iloc[-1][0] += datetime.timedelta(j)
