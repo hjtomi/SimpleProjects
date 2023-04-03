@@ -79,6 +79,7 @@ def fill_eur_huf_dates():
         if day_diff > 1:
             for j in range(day_diff-1):
                 current_row_contents[0] = pd.to_datetime(current_row_contents[0]) + datetime.timedelta(1)
+                current_row_contents[6] = '0.00%'
                 df_huf.loc[len(df_huf.index)] = current_row_contents
 
     df_huf['Date'] = pd.to_datetime(df_huf['Date'])
@@ -86,4 +87,18 @@ def fill_eur_huf_dates():
     df_huf.to_excel('EUR_HUF Historical Data Date-Filled.xlsx')
 
 
+def make_income_relative():
+    df_pg = pd.read_excel('grand-penztargep-datummal.xlsx')
+    df_huf = pd.read_excel('EUR_HUF Historical Data Date-Filled.xlsx')
 
+    df_pg['relativ_osszesen'] = df_pg['osszesen'] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_0.05'] = df_pg[0.05] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_0.18'] = df_pg[0.18] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_0.27'] = df_pg[0.27] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_kartyas_fizetes'] = df_pg['kartyas_fizetes'] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_Storno 5%'] = df_pg['Storno 5%'] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_Storno 18%'] = df_pg['Storno 18%'] * round(377 / df_huf['Price'], 2)
+    df_pg['relativ_Storno 27%'] = df_pg['Storno 27%'] * round(377 / df_huf['Price'], 2)
+    df_pg['datum'] = df_pg['datum'].dt.date
+
+    df_pg.to_excel('grand-penztargep-datummal-relativokkal.xlsx', index=False)
