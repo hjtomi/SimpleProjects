@@ -67,23 +67,23 @@ def dates_to_grand():
     df.to_excel('grand-penztargep-datummal.xlsx', index=False)
 
 
-df_huf = pd.read_excel('EUR_HUF Historical Data.xlsx')
+def fill_eur_huf_dates():
+    df_huf = pd.read_excel('EUR_HUF Historical Data.xlsx')
+
+    for i, row in enumerate(df_huf[:-1].iterrows()):
+        current_row_contents = row[1]
+        dt_date = row[1][0]
+        dt_next_date = df_huf.loc[i+1][0]
+        day_diff = (dt_next_date - dt_date).days
+
+        if day_diff > 1:
+            for j in range(day_diff-1):
+                current_row_contents[0] = pd.to_datetime(current_row_contents[0]) + datetime.timedelta(1)
+                df_huf.loc[len(df_huf.index)] = current_row_contents
+
+    df_huf['Date'] = pd.to_datetime(df_huf['Date'])
+    df_huf = df_huf.sort_values(by='Date')
+    df_huf.to_excel('EUR_HUF Historical Data Date-Filled.xlsx')
 
 
-print(df_huf)
 
-# for i, row in enumerate(df_huf[:-1].iterrows()):
-#     current_row_contents = row[1]
-#     dt_date = row[1][0]
-#     dt_next_date = df_huf.loc[i+1][0]
-#     day_diff = (dt_next_date - dt_date).days
-#
-#     print(current_row_contents)
-#     print(dt_date)
-#     print(dt_next_date)
-#     print(day_diff)
-#     print("\n")
-#     if day_diff > 1:
-#         for j in range(day_diff):
-#             df_huf = df_huf.append(current_row_contents)
-#             df_huf.iloc[-1][0] += datetime.timedelta(j)
